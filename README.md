@@ -23,7 +23,7 @@ Los equipos son de **3 integrantes fijos**. Cada uno tendrá un rol claro:
 - Otros que lideren 🧭
 - Y otros que ejecuten rápido ⚡
 
-Esta vez el proyecto tiene **más conflictos intencionales** que la vez anterior. Coordínense bien antes de empezar a pushear cambios.
+Coordínense bien antes de empezar a pushear cambios. El repositorio incluye **GitHub Actions** que corren automáticamente: una valida el HTML y los enlaces en cada PR, y otra despliega la página en GitHub Pages en cada push a `main`.
 
 ---
 
@@ -135,9 +135,14 @@ Esta regla hace que el título principal del hero se vea de color morado en luga
 
 ### ✅ Publicado en GitHub Pages
 
-- Activar GitHub Pages desde la rama `main`.
-- Validar que el sitio cargue correctamente y compartir la URL.
-- Referencia: [Configurar GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+El deploy es **automático** gracias al workflow `.github/workflows/deploy.yml`. Cada push a `main` despliega la página sin configuración manual.
+
+Solo necesitan habilitarlo una vez en la configuración del repositorio:
+1. Ir a **Settings → Pages**
+2. En *Source* seleccionar **GitHub Actions**
+3. A partir de ahí, cada merge a `main` despliega automáticamente
+
+La URL del sitio aparece en la pestaña **Environments → github-pages** del repositorio.
 
 ---
 
@@ -186,6 +191,19 @@ La tarea del equipo es **resolver esto manualmente**, eliminando los marcadores 
 | `bugfix/h1-color` | 1 integrante | Bug de CSS | 1 PR |
 
 > El líder puede asignar las ramas `clean-css`, `navbar-fix` y `bugfix/h1-color` como tareas a distintos integrantes del equipo.
+
+## ⚙️ GitHub Actions incluidas
+
+| Workflow | Archivo | Se ejecuta en |
+|---|---|---|
+| Validación HTML + links | `.github/workflows/validate.yml` | Cada PR hacia `main` |
+| Deploy a GitHub Pages | `.github/workflows/deploy.yml` | Cada push a `main` |
+
+**`validate.yml`** corre dos checks en cada PR:
+- Valida que el HTML sea correcto según el estándar W3C
+- Verifica que todos los `href="#..."` del HTML apunten a un `id` que realmente existe — el PR **no podrá mergearse** si el navbar tiene links rotos
+
+**`deploy.yml`** despliega automáticamente la página en GitHub Pages tras cada merge a `main`.
 
 ---
 
